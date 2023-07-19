@@ -19,13 +19,49 @@ class LoginScreen extends StatelessWidget {
                   Text('Login',
                       style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 10),
-                  const Text('Formulario')
+                  _Formulario(),
                 ],
               ),
             ),
+            const SizedBox(height: 50),
+            const Text(
+              'Crear una nueva cuenta',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            )
           ],
         )),
       ),
+    );
+  }
+}
+
+class _Formulario extends StatelessWidget {
+  const _Formulario({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Form(
+          child: Column(
+        children: [
+          TextFormField(
+            autocorrect: false,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple)),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
+                hintText: 'email.address@gmail.com',
+                labelText: 'Correo electronico',
+                labelStyle: TextStyle(color: Colors.grey),
+                prefixIcon: Icon(
+                  Icons.alternate_email_sharp,
+                  color: Colors.deepPurple,
+                )),
+          )
+        ],
+      )),
     );
   }
 }
