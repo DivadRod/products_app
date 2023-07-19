@@ -6,6 +6,14 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: AuthBackgound());
+    return Scaffold(
+      body: AuthBackgound(
+        child: Container(
+          width: double.infinity,
+          height: 300,
+          color: Colors.red,
+        ),
+      ),
+    );
   }
 }

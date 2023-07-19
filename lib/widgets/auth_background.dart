@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AuthBackgound extends StatelessWidget {
-  const AuthBackgound({super.key});
+  final Widget child;
+  const AuthBackgound({
+    super.key,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +14,24 @@ class AuthBackgound extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: Stack(
-        children: [_PurpleBox()],
+        children: [
+          _PurpleBox(),
+          _HeaderIcon(),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+class _HeaderIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: 30),
+        child: const Icon(Icons.person_pin, color: Colors.white, size: 100),
       ),
     );
   }
