@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/ui/input_decoration.dart';
 import 'package:products_app/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -26,7 +27,7 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 50),
             const Text(
               'Crear una nueva cuenta',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             )
           ],
         )),
@@ -47,19 +48,36 @@ class _Formulario extends StatelessWidget {
           TextFormField(
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepPurple)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
+            decoration: InputDecorations.authInputDecoration(
                 hintText: 'email.address@gmail.com',
                 labelText: 'Correo electronico',
-                labelStyle: TextStyle(color: Colors.grey),
-                prefixIcon: Icon(
-                  Icons.alternate_email_sharp,
-                  color: Colors.deepPurple,
-                )),
-          )
+                prefixIcon: Icons.alternate_email_rounded),
+          ),
+          const SizedBox(height: 30),
+          TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
+                hintText: 'Password',
+                labelText: 'Contraseña',
+                prefixIcon: Icons.lock_outline,
+              )),
+          const SizedBox(height: 50),
+          MaterialButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            color: Colors.deepPurple,
+            elevation: 0,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+              child: const Text(
+                'Ingresar',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+            onPressed: () {},
+          ),
+          const SizedBox(height: 50),
         ],
       )),
     );
