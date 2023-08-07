@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/providers/login_form_provider.dart';
+import 'package:provider/provider.dart';
+
 import 'package:products_app/ui/input_decoration.dart';
 import 'package:products_app/widgets/widgets.dart';
 
@@ -12,7 +15,7 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            SizedBox(height: 250),
+            const SizedBox(height: 250),
             CardContainer(
               child: Column(
                 children: [
@@ -20,7 +23,10 @@ class LoginScreen extends StatelessWidget {
                   Text('Login',
                       style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 10),
-                  _Formulario(),
+                  ChangeNotifierProvider(
+                    create: (_) => LoginFormProvider(),
+                    child: const _Formulario(),
+                  )
                 ],
               ),
             ),
@@ -42,10 +48,17 @@ class _Formulario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final logginForm = Provider.of<LoginFormProvider>(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+      /*
+      FORMULARIO
+      */
       child: Form(
+          key: logginForm.formkey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          //key: ,
           child: Column(
             children: [
               TextFormField(
@@ -55,14 +68,13 @@ class _Formulario extends StatelessWidget {
                     hintText: 'email.address@gmail.com',
                     labelText: 'Correo electronico',
                     prefixIcon: Icons.alternate_email_rounded),
+                onChanged: (value) => logginForm.email = value,
                 validator: (value) {
                   String pattern =
                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  RegExp regExp = new RegExp(pattern);
+                  RegExp regExp = RegExp(pattern);
 
-                  return regExp.hasMatch(value ?? '')
-                      ? null
-                      : 'Ingrese un correo';
+                  return regExp.hasMatch(value ?? '') ? null : 'Enter an email';
                 },
               ),
               const SizedBox(height: 30),
@@ -74,6 +86,7 @@ class _Formulario extends StatelessWidget {
                   labelText: 'Password',
                   prefixIcon: Icons.lock_outline,
                 ),
+                onChanged: (value) => logginForm.password = value,
                 validator: (value) {
                   return (value != null && value.length >= 6)
                       ? null
@@ -95,7 +108,9 @@ class _Formulario extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  //TODO: Login
+                  if (!logginForm.isValidForm()) return;
+
+                  Navigator.pushReplacementNamed(context, 'home');
                 },
               ),
               const SizedBox(height: 50),
