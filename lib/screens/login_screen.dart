@@ -48,7 +48,7 @@ class _Formulario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logginForm = Provider.of<LoginFormProvider>(context);
+    final loginForm = Provider.of<LoginFormProvider>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
@@ -56,7 +56,7 @@ class _Formulario extends StatelessWidget {
       FORMULARIO
       */
       child: Form(
-          key: logginForm.formkey,
+          key: loginForm.formkey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           //key: ,
           child: Column(
@@ -68,7 +68,7 @@ class _Formulario extends StatelessWidget {
                     hintText: 'email.address@gmail.com',
                     labelText: 'Correo electronico',
                     prefixIcon: Icons.alternate_email_rounded),
-                onChanged: (value) => logginForm.email = value,
+                onChanged: (value) => loginForm.email = value,
                 validator: (value) {
                   String pattern =
                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -86,7 +86,7 @@ class _Formulario extends StatelessWidget {
                   labelText: 'Password',
                   prefixIcon: Icons.lock_outline,
                 ),
-                onChanged: (value) => logginForm.password = value,
+                onChanged: (value) => loginForm.password = value,
                 validator: (value) {
                   return (value != null && value.length >= 6)
                       ? null
@@ -100,18 +100,34 @@ class _Formulario extends StatelessWidget {
                 color: Colors.deepPurple,
                 elevation: 0,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                  child: const Text(
-                    'Ingresar',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  child: Text(
+                    loginForm.isLoading ? 'Esperando' : 'Ingresar',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
-                onPressed: () {
-                  if (!logginForm.isValidForm()) return;
+                /*
+                Si el form esta cargando devuelve un --- ? null ---
+                en caso contrario --- : laFuncion() async ---
+                */
+                onPressed: loginForm.isLoading
+                    ? null
+                    : () async {
+                        //Ocultar teclado
+                        FocusScope.of(context).unfocus();
 
-                  Navigator.pushReplacementNamed(context, 'home');
-                },
+                        if (!loginForm.isValidForm()) return;
+
+                        // TODO: validar
+                        loginForm.isLoading = true;
+
+                        await Future.delayed(const Duration(seconds: 2));
+
+                        //TODO: validar si el login es correcto
+                        loginForm.isLoading = false;
+
+                        Navigator.pushReplacementNamed(context, 'home');
+                      },
               ),
               const SizedBox(height: 50),
             ],
