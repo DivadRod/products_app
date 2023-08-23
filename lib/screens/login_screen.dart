@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   ChangeNotifierProvider(
                     create: (_) => LoginFormProvider(),
-                    child: const _Formulario(),
+                    child: _Formulario(),
                   )
                 ],
               ),
@@ -44,8 +44,6 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _Formulario extends StatelessWidget {
-  const _Formulario({super.key});
-
   @override
   Widget build(BuildContext context) {
     final loginForm = Provider.of<LoginFormProvider>(context);
@@ -99,11 +97,13 @@ class _Formulario extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 color: Colors.deepPurple,
                 elevation: 0,
+                // ignore: sort_child_properties_last
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   child: Text(
                     loginForm.isLoading ? 'Esperando' : 'Ingresar',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
                 /*
