@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:products_app/screens/screen.dart';
+import 'package:provider/provider.dart';
+import 'package:products_app/services/services.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(AppState());
+
+class AppState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ItemToolsService(),
+          lazy: true,
+        )
+      ],
+      child: const MyApp(),
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
