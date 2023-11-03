@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/models/models.dart';
 
 class ProductCard extends StatelessWidget {
+  final ToolsItem itemTool;
+
+  const ProductCard({Key? key, required this.itemTool}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,10 +20,16 @@ class ProductCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: [
-            _BackgroundImage(),
-            _ProductDetails(),
-            Positioned(top: 0, right: 0, child: _PriceTag()),
-            Positioned(top: 0, right: 275, child: _NotAvailable())
+            _BackgroundImage(url: itemTool.picture),
+            _ProductDetails(itemTool: itemTool),
+            Positioned(
+                top: 0,
+                right: 0,
+                child: _PriceTag(
+                  price: itemTool.price,
+                )),
+            if (!itemTool.available)
+              const Positioned(top: 0, right: 275, child: _NotAvailable())
           ],
         ),
       ),
@@ -66,6 +77,10 @@ class _NotAvailable extends StatelessWidget {
 }
 
 class _PriceTag extends StatelessWidget {
+  final double price;
+
+  const _PriceTag({super.key, required this.price});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,7 +97,7 @@ class _PriceTag extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            '\$103.99',
+            '\$price',
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),
@@ -92,6 +107,10 @@ class _PriceTag extends StatelessWidget {
 }
 
 class _ProductDetails extends StatelessWidget {
+  final ToolsItem itemTool;
+
+  const _ProductDetails({super.key, required this.itemTool});
+
   @override
   Widget build(BuildContext context) {
     //boxDecoration
@@ -108,12 +127,12 @@ class _ProductDetails extends StatelessWidget {
 
         //Build-Box-Decoration
         decoration: _buildBoxDecoration(),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Disco duro 1G',
-              style: TextStyle(
+              itemTool.name,
+              style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
@@ -121,8 +140,8 @@ class _ProductDetails extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             Text(
-              'Id del disco duro',
-              style: TextStyle(
+              itemTool.id.toString(),
+              style: const TextStyle(
                   fontSize: 15,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
@@ -147,6 +166,10 @@ class _ProductDetails extends StatelessWidget {
 }
 
 class _BackgroundImage extends StatelessWidget {
+  final String? url;
+
+  const _BackgroundImage({required this.url});
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -154,9 +177,10 @@ class _BackgroundImage extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 400,
-        child: const FadeInImage(
-          placeholder: AssetImage('assets/jar-loading.gif'),
-          image: NetworkImage('https://via.placeholder.com/400x300'),
+        child: FadeInImage(
+          placeholder: const AssetImage('assets/jar-loading.gif'),
+          image: NetworkImage(url!),
+          fit: BoxFit.cover,
         ),
       ),
     );

@@ -14,7 +14,10 @@ class ItemToolsService extends ChangeNotifier {
   }
 
   // TODO: hacer fetcjh productos
-  Future loadItemTools() async {
+  Future<List<ToolsItem>> loadItemTools() async {
+    isLoading = true;
+    notifyListeners();
+
     final url = Uri.https(_baseUrl, 'products.json');
     final respuesta = await http.get(url);
     final Map<String, dynamic> toolsItemsMap = json.decode(respuesta.body);
@@ -25,8 +28,9 @@ class ItemToolsService extends ChangeNotifier {
       toolsItems.add(temporalItemTool as ToolsItem);
     });
 
-    print(toolsItems[1].name);
-
-    //return toolsItemsMap;
+    //print(toolsItems[1].name);
+    isLoading = false;
+    notifyListeners();
+    return toolsItems;
   }
 }
